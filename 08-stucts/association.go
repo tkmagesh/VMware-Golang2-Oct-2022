@@ -43,4 +43,7 @@ func main() {
 	//accessing the filed using a pointer to the struct
 	fmt.Println(vmware.Name) //equivalent to "vmware -> Name" in c/c++
 
+	//intel := &Organziation{}
+	intel := new(Organziation)
+	fmt.Println(intel)
 }
