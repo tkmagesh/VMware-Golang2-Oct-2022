@@ -1,0 +1,90 @@
+Magesh Kuppan
+
+Schedule
+    Session 01  : 3:30 hrs (with 20 mins tea break)
+    Lunch       : 1 hr
+    Session 02  : 3:30 hrs (with 20 mins tea break)
+
+Methodology:
+    No powerpoints
+
+Repo:
+    https://github.com/tkmagesh/vmware-golang2-oct-2022
+
+
+/* 
+program structure
+data types
+variables, constants, iota
+control structures
+errors
+collections (arrays, slices & maps)
+pointers
+functions (anonymous, higher order)
+structs (composition)
+methods
+interfaces
+concurrency
+modules & packages
+*/
+
+Executing a Go program
+    go run <program.go>
+
+Creating a build
+    go build <program.go>
+
+Cross Compilation
+    Environment variables
+        go env
+
+    Environment variables for build
+        GOOS, GOARCH
+
+    To change the Environment variables
+        go env -w var1=<val1> var2=<val2>
+
+    To cross compile:
+        GOOS=windows GOARCH=386 go build <program.go>
+
+    To get the list of GOOS & GOARCH
+        go tool dist list
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Glen
+    pointers
+    Using & Designing interfaces
+    Concurrency
+
+Kevin & Ramesh
+    Testing
+    Higher Order Functions
+
+Zach
+    Type System
+    Testing
+
+Paul
+    Concurrency, 
+    testing, 
+    managing state, 
+    packaging, 
+    deploying, 
+    profiling, 
+    web services
