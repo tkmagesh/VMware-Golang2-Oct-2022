@@ -22,6 +22,11 @@ func (product Product) Format() string {
 	return fmt.Sprintf("Id = %d, Name = %q, Cost = %v", product.Id, product.Name, product.Cost)
 }
 
+//fmt.Stringer interface implementation
+func (product Product) String() string {
+	return fmt.Sprintf("Id = %d, Name = %q, Cost = %v", product.Id, product.Name, product.Cost)
+}
+
 func Display(product Product) {
 	fmt.Printf("Id = %d, Name = %q, Cost = %v\n", product.Id, product.Name, product.Cost)
 }
@@ -51,6 +56,11 @@ func (pp PerishableProduct) Format() string {
 	return fmt.Sprintf("%v, Expiry = %q", pp.Product.Format(), pp.Expiry)
 }
 
+//fmt.Stringer interface implementation
+func (pp PerishableProduct) String() string {
+	return fmt.Sprintf("%v, Expiry = %q", pp.Product.Format(), pp.Expiry)
+}
+
 func NewPerishableProduct(id int, name string, cost float32, expiry string) PerishableProduct {
 	return PerishableProduct{
 		Product: Product{Id: id, Name: name, Cost: cost},
@@ -77,9 +87,14 @@ func main() {
 
 	//using a method
 	//apple.Print()
-	fmt.Println(apple.Format())
+	//fmt.Println(apple.Format())
+
+	//taking adv of the fmt.Stringer interface implementation
+	fmt.Println(apple)
 
 	apple.ApplyDiscount(50)
 	//apple.Print()
-	fmt.Println(apple.Format())
+	//fmt.Println(apple.Format())
+	//taking adv of the fmt.Stringer interface implementation
+	fmt.Println(apple)
 }
