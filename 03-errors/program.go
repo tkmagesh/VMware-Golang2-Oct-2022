@@ -18,12 +18,12 @@ func main() {
 	*/
 
 	quotient, remainder, err := divide(100, 0)
-	if err == DivideByZeroError {
+	if errors.Is(err, DivideByZeroError) {
 		fmt.Println("do not attempt to divide by zero")
 		return
 	}
 	if err != nil {
-		fmt.Println("something went wrong")
+		fmt.Println("something went wrong", err)
 		return
 	}
 	fmt.Printf("Dividing 100 by 7, quotient = %d and remainder = %d\n", quotient, remainder)
