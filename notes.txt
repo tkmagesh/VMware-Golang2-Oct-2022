@@ -51,7 +51,22 @@ Cross Compilation
         go tool dist list
     
 
+Higher Order Functions
+    Functions as first class objects (functions as data)
+    - assign functions to variables
+    - pass functions as arguments to other functions
+    - return functions as return results
 
+
+var fn func()
+
+fn = func(){
+    //something
+}
+
+fn = func(){
+    //something else
+}
 
 
 
