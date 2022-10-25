@@ -56,17 +56,11 @@ Higher Order Functions
     - assign functions to variables
     - pass functions as arguments to other functions
     - return functions as return results
+Variadic functions
+    - 
 
+Errors
 
-var fn func()
-
-fn = func(){
-    //something
-}
-
-fn = func(){
-    //something else
-}
 
 
 
