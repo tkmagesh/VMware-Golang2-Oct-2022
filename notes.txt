@@ -63,9 +63,19 @@ Errors
 
 Deferred Functions
 
+Panic
 
+Collections
+    Array
+        Fixed size collection 
 
+    Slice
+        Varying size collection
+        Internally maintains a pointer to an array
+        append()
 
+    Map
+        Key-Value pairs collection
 
 
 
