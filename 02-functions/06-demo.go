@@ -2,8 +2,10 @@ package main
 
 import "fmt"
 
+type mathOperation func(int, int)
+
 func main() {
-	operations := []func(int, int){
+	operations := []mathOperation{
 		func(i1, i2 int) {
 			fmt.Println("Add result : ", i1+i2)
 		},
