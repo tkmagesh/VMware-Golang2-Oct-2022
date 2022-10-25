@@ -5,6 +5,11 @@ import "fmt"
 func main() {
 	defer func() {
 		fmt.Println("	deferred @ main")
+		if e := recover(); e != nil {
+			fmt.Println("Panic encountered : ", e)
+			return
+		}
+		fmt.Println("Thank you!")
 	}()
 	fmt.Println("main started")
 	f1()
@@ -31,7 +36,7 @@ func f2() {
 	defer fmt.Println("	deferred @ f2 [2]")
 	defer fmt.Println("	deferred @ f2 [3]")
 	fmt.Println("f2 started")
-	divisor := 0
+	divisor := 7
 	result := 100 / divisor
 	fmt.Println(result)
 	fmt.Println("f2 completed")
