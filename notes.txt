@@ -79,8 +79,19 @@ Collections
 
 
 
+Concurrency
+    Channel data type
+    <- (channel operator)
 
+    var ch chan int
+    ch = make(chan int)
+    ch <- 100 // => send operation
+    result := <-ch // => receive operation
 
+    Channels
+    Receive Operation is ALWAYS a blocking operation
+    Send Operation is blocked until a receive operation is initiated (conditions apply)
+        OR Send Operation can succeed only if a Receive operation is already initiated
 
 
 
