@@ -94,10 +94,54 @@ Concurrency
         OR Send Operation can succeed only if a Receive operation is already initiated
 
 
+Before Go 1.13
+    GOPATH
+        bin
+        pkg
+        src
+            /github.com
+                /vmware
+                    /my-app
+                        import "github.com/vmware/pkg-1"
+                    /pkg-1
+                    /pkg-2
 
+In Go 1.13 - modules were introduced
+    go.mod
+        minimum go version
+        module name (github.com/vmware/my-app)
+        dependencies
 
+    packages
+        folders
 
+To create a mod file
+    go mod init <module_name>
 
+to execute a module
+    go run .
+
+to create a build
+    go build .
+
+to install 3rd party modules
+    go get <module>
+
+to sync the go.mod file
+    go mod tidy
+
+to download the dependencies into the mod cache
+    go mod download
+
+to localize the dependencies (in the vendor folder)
+    go mod vendor
+
+to install go binaries (installed in the GOPATH/bin folder)
+    go install <module>
+
+Other useful commands
+    go mod graph
+    go mod why
 
 Glen
     pointers
