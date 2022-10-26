@@ -8,7 +8,6 @@ import (
 var result int
 
 func main() {
-	panic("dummy panic")
 	wg := &sync.WaitGroup{}
 	wg.Add(1)
 	go add(100, 200, wg)
