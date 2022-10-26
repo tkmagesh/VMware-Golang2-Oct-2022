@@ -10,34 +10,30 @@ import (
 )
 
 func main() {
-	ch := genPrimes(3)
+	stop := make(chan struct{})
+	ch := genPrimes(3, stop)
+
+	go func() {
+		fmt.Println("Hit ENTER to stop...")
+		fmt.Scanln()
+		stop <- struct{}{}
+	}()
+
 	for primeNo := range ch {
 		fmt.Println(primeNo)
 	}
 	fmt.Println("Done")
 }
 
-func genPrimes(start int) <-chan int {
+func genPrimes(start int, stop chan struct{}) <-chan int {
 	ch := make(chan int)
 
-	/*
-		timeoutCh := func() <-chan time.Time {
-			timeoutCh := make(chan time.Time)
-			go func() {
-				time.Sleep(10 * time.Second)
-				timeoutCh <- time.Now()
-			}()
-			return timeoutCh
-		}()
-	*/
-
-	timeoutCh := time.After(10 * time.Second)
 	go func() {
 		no := start
 	LOOP:
 		for {
 			select {
-			case <-timeoutCh:
+			case <-stop:
 				break LOOP
 			default:
 				if isPrime(no) {
