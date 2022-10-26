@@ -9,7 +9,8 @@ import (
 
 func main() {
 	rootCtx := context.Background()
-	f1Ctx, cancel := context.WithCancel(rootCtx)
+	valCtx := context.WithValue(rootCtx, "k1", "v1")
+	f1Ctx, cancel := context.WithCancel(valCtx)
 	defer cancel() //to avoid any memory leak
 	go func() {
 		fmt.Println("Hit ENTER to stop..")
@@ -24,12 +25,13 @@ func main() {
 
 func f1(ctx context.Context, wg *sync.WaitGroup) {
 
-	fmt.Println("f1 started")
+	fmt.Printf("f1 started - &ctx : %p\n", ctx)
 
 	fnWg := &sync.WaitGroup{}
-	timeoutCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-
+	f1ValCtx := context.WithValue(ctx, "f1-k1", "f1-v1")
+	timeoutCtx, cancel := context.WithTimeout(f1ValCtx, 10*time.Second)
 	defer cancel()
+	fmt.Printf("f1 - &timeoutCtx : %p\n", timeoutCtx)
 	for i := 1; i <= 2; i++ {
 		fnWg.Add(1)
 		go fn(i, timeoutCtx, fnWg)
@@ -53,8 +55,9 @@ LOOP:
 }
 
 func fn(id int, ctx context.Context, wg *sync.WaitGroup) {
-	fmt.Printf("fn[%d] started\n", id)
-
+	fmt.Printf("fn[%d] started - &ctx : %p\n", id, ctx)
+	fmt.Printf("fn[%d] value of k1 = %v\n", id, ctx.Value("k1"))
+	fmt.Printf("fn[%d] value of f1-k1 = %v\n", id, ctx.Value("f1-k1"))
 LOOP:
 	for {
 		select {
