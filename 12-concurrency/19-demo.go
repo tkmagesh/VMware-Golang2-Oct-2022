@@ -10,21 +10,34 @@ import (
 )
 
 func main() {
-	ch := genPrimes(3, 100)
+	ch := genPrimes(3)
 	for primeNo := range ch {
 		fmt.Println(primeNo)
 	}
 	fmt.Println("Done")
 }
 
-func genPrimes(start, end int) <-chan int {
+func genPrimes(start int) <-chan int {
 	ch := make(chan int)
+
+	timeoutCh := func() <-chan time.Time {
+		timeoutCh := make(chan time.Time)
+		go func() {
+			time.Sleep(10 * time.Second)
+			timeoutCh <- time.Now()
+		}()
+		return timeoutCh
+	}()
+
 	go func() {
-		for no := start; no <= end; no++ {
+		no := start
+		for {
+			<-timeoutCh
 			if isPrime(no) {
 				time.Sleep(500 * time.Millisecond)
 				ch <- no
 			}
+			no++
 		}
 		close(ch)
 	}()
