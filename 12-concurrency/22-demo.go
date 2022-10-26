@@ -10,8 +10,6 @@ func main() {
 	ch <- 100
 	ch <- 200
 	fmt.Println("len(ch) = ", len(ch))
-	/*
-		fmt.Println(<-ch)
-		fmt.Println(<-ch)
-	*/
+	fmt.Println(<-ch)
+	fmt.Println(<-ch)
 }
