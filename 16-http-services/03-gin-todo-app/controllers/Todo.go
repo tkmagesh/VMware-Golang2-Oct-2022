@@ -22,7 +22,7 @@ func GetTodos(c *gin.Context) {
 
 func CreateATodo(c *gin.Context) {
 	var todo models.Todo
-	c.BindJSON(&todo)
+	c.BindJSON(&todo) //bind the request payload to the model instance
 	fmt.Println(todo)
 	err := repository.CreateATodo(&todo)
 	if err != nil {

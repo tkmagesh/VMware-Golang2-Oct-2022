@@ -6,6 +6,7 @@ type Todo struct {
 	Description string `json:"description"`
 }
 
+//GORM
 func (t *Todo) TableName() string {
 	return "todo"
 }
