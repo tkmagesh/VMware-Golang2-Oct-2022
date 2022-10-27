@@ -6,6 +6,8 @@ import (
 	"time"
 )
 
+type Middleware func(http.HandlerFunc) http.HandlerFunc
+
 //profile middleware
 func profile(handler http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -22,6 +24,13 @@ func log(handler http.HandlerFunc) http.HandlerFunc {
 		fmt.Printf("%s - %s\n", r.Method, r.URL)
 		handler(w, r)
 	}
+}
+
+func chain(handler http.HandlerFunc, middlewares ...Middleware) http.HandlerFunc {
+	for _, m := range middlewares {
+		handler = m(handler)
+	}
+	return handler
 }
 
 func indexHandler(res http.ResponseWriter, req *http.Request) {
@@ -48,9 +57,14 @@ func customersHandler(res http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/", profile(log(indexHandler)))
-	http.HandleFunc("/products", profile(log(productsHandler)))
-	http.HandleFunc("/customers", profile(log(customersHandler)))
+	/*
+		http.HandleFunc("/", profile(log(indexHandler)))
+		http.HandleFunc("/products", profile(log(productsHandler)))
+		http.HandleFunc("/customers", profile(log(customersHandler)))
+	*/
+	http.HandleFunc("/", chain(indexHandler, log, profile))
+	http.HandleFunc("/products", chain(productsHandler, log, profile))
+	http.HandleFunc("/customers", chain(customersHandler, log, profile))
 	http.ListenAndServe(":8080", nil)
 }
 
