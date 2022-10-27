@@ -5,6 +5,8 @@ package proto;
 option go_package="/proto";
 
 //Data (or Message) Contracts
+
+//Request & Response
 message AddRequest{
     int32 x = 1;
     int32 y = 2;
@@ -14,9 +16,24 @@ message AddResponse{
     int32 result = 1;
 }
 
+//Server Streaming
+message PrimeRequest{
+    int32 start = 1;
+    int32 end = 2;
+}
+
+message PrimeResponse{
+    int32 no = 1;
+}
+
 //Service Contracts
 service AppService{
 
     //Operation Contracts
+    //Request & Response
     rpc Add (AddRequest) returns (AddResponse);
+
+    //Server Streaming
+    rpc GeneratePrimes (PrimeRequest) returns (stream PrimeResponse);
+
 }
