@@ -24,7 +24,8 @@ func main() {
 
 	//doRequestResponse(ctx, service)
 	//doServerStreaming(ctx, service)
-	doClientStreaming(ctx, service)
+	//doClientStreaming(ctx, service)
+	doBiDiStreaming(ctx, service)
 }
 
 func doRequestResponse(ctx context.Context, service proto.AppServiceClient) {
@@ -41,6 +42,7 @@ func doRequestResponse(ctx context.Context, service proto.AppServiceClient) {
 }
 
 func doServerStreaming(ctx context.Context, service proto.AppServiceClient) {
+	count := 0
 	req := &proto.PrimeRequest{
 		Start: 3,
 		End:   100,
@@ -50,6 +52,11 @@ func doServerStreaming(ctx context.Context, service proto.AppServiceClient) {
 		log.Fatalln(err)
 	}
 	for {
+		count++
+		if count >= 5 {
+			clientStream.CloseSend()
+			break
+		}
 		resp, err := clientStream.Recv()
 		if err == io.EOF {
 			fmt.Println("All the prime nos received")
@@ -84,4 +91,51 @@ func doClientStreaming(ctx context.Context, service proto.AppServiceClient) {
 		log.Fatalln(err)
 	}
 	fmt.Println("Average Received : ", res.GetAverage())
+}
+
+func doBiDiStreaming(ctx context.Context, service proto.AppServiceClient) {
+	personNames := []proto.PersonName{
+		{FirstName: "Magesh", LastName: "Kuppan"},
+		{FirstName: "Suresh", LastName: "Kannan"},
+		{FirstName: "Rajesh", LastName: "Pandit"},
+		{FirstName: "Ganesh", LastName: "Easwaran"},
+		{FirstName: "Ramesh", LastName: "Jayaraman"},
+	}
+	clientStream, err := service.Greet(ctx)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	//handle responses
+	done := func() <-chan struct{} {
+		doneCh := make(chan struct{})
+		go func() {
+			for {
+				res, err := clientStream.Recv()
+				if err == io.EOF {
+					break
+				}
+				if err != nil {
+					log.Fatalln(err)
+				}
+				msg := res.GetGreetMessage()
+				fmt.Println(msg)
+			}
+			close(doneCh)
+		}()
+		return doneCh
+	}()
+
+	for _, personName := range personNames {
+		fmt.Printf("Sending Person %v\n", personName)
+		time.Sleep(500 * time.Millisecond)
+		req := &proto.GreetRequest{
+			Person: &personName,
+		}
+		err := clientStream.Send(req)
+		if err != nil {
+			log.Fatalln(err)
+		}
+	}
+	clientStream.CloseSend()
+	<-done
 }

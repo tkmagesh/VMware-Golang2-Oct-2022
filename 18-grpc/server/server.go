@@ -32,11 +32,17 @@ func (s appService) GeneratePrimes(req *proto.PrimeRequest, serverStream proto.A
 	for no := start; no <= end; no++ {
 		if isPrime(no) {
 			time.Sleep(500 * time.Millisecond)
+			fmt.Printf("Sending Prime No : %d\n", no)
 			res := &proto.PrimeResponse{
 				No: no,
 			}
 			err := serverStream.Send(res)
 			if err != nil {
+				/*
+					if codes.Code(err) == codes.Unavailable {
+
+					}
+				*/
 				log.Fatalln(err)
 			}
 		}
@@ -77,6 +83,28 @@ func (s appService) CalculateAverage(serverStream proto.AppService_CalculateAver
 	err := serverStream.SendAndClose(res)
 	if err != nil {
 		log.Fatalln(err)
+	}
+	return nil
+}
+
+func (asi *appService) Greet(stream proto.AppService_GreetServer) error {
+	for {
+		req, err := stream.Recv()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			log.Fatalln(err)
+		}
+		personName := req.GetPerson()
+		msg := fmt.Sprintf("Hi %s, %s!", personName.GetFirstName(), personName.GetLastName())
+		res := &proto.GreetResponse{
+			GreetMessage: msg,
+		}
+		er := stream.Send(res)
+		if er != nil {
+			log.Fatalln(err)
+		}
 	}
 	return nil
 }
