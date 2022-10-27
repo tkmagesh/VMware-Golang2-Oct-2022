@@ -12,6 +12,7 @@ Repo:
     https://github.com/tkmagesh/vmware-golang2-oct-2022
 
 
+
 /* 
 program structure
 data types
@@ -142,6 +143,37 @@ to install go binaries (installed in the GOPATH/bin folder)
 Other useful commands
     go mod graph
     go mod why
+
+
+RESTful Service
+    Application
+        process http requests
+
+    REST
+        - Data as a resource
+        - Where?
+            URL
+        - Operations?
+            Http Methods
+        - Data Format?
+            JSON
+        - Response?
+            HTTP Status Codes
+
+Http Server
+    
+
+
+
+
+
+
+
+
+
+
+
+
 
 Glen
     pointers

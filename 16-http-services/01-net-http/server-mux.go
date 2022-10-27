@@ -1,5 +1,9 @@
 package main
 
+/*
+	Use a context to share some data across the handler functions
+*/
+
 import (
 	"fmt"
 	"net/http"
@@ -75,4 +79,11 @@ func main() {
 
 	GET - http://localhost:8080/customers
 	POST - http://localhost:8080/customers
+*/
+
+/*
+r.HandleFunc("/products", productsHandler1).Method("GET", "POST")
+r.HandleFunc("/products/:id", GetOneProductHandler).Method("GET")
+r.HandleFunc("/products/:id", UpdateOneProductHandler).Method("PUT")
+r.HandleFunc("/products/:id", productsHandler2).Method("GET", "PUT", "PATCH", "DELETE")
 */
